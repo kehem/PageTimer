@@ -18,6 +18,7 @@ const attributes = scriptTag.getAttributeNames();
 // Filter and extract all `data-*` attributes
 attributes.forEach(attr => {
     if (attr.startsWith('data-') && attr !== 'data-api-url') {
+        // Extract the key and value of each data attribute
         const paramName = attr.replace('data-', '');  // Remove the 'data-' prefix
         const paramValue = scriptTag.getAttribute(attr);
         params[paramName] = paramValue;
@@ -45,19 +46,19 @@ document.addEventListener('visibilitychange', function() {
 // Update time every second
 setInterval(updateTime, 1000);
 
-// Send a POST request before the user leaves the page
+// Log the time and send a POST request before the user leaves the page
 window.onbeforeunload = function() {
     updateTime();
 
-    const url = window.location.href;
+    // Log total active time
+    console.log("Total active time (in seconds):", Math.floor(totalTime / 1000));
     const postData = {
-        url: url, 
         activeTime: Math.floor(totalTime / 1000),
-        ...params  // Spread dynamic parameters into the postData object
+        ...params  // Spread the dynamic parameters into the postData object
     };
 
     // POST request
-    fetch(apiUrl, {
+    fetch(apiUrl, {  // Use the API URL from the script tag's data-api-url attribute
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

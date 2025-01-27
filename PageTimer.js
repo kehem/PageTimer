@@ -49,9 +49,6 @@ setInterval(updateTime, 1000);
 // Log the time and send a POST request before the user leaves the page
 window.onbeforeunload = function() {
     updateTime();
-
-    // Log total active time
-    console.log("Total active time (in seconds):", Math.floor(totalTime / 1000));
     const postData = {
         activeTime: Math.floor(totalTime / 1000),
         ...params  // Spread the dynamic parameters into the postData object
